@@ -147,14 +147,15 @@
         select,
         textarea {
             width: 100%;
-            padding: 12px 14px;
+            padding: 12px 2px;
             font-size: 14px;
-            border: 1px solid #E0D9CC;
-            border-radius: 4px;
-            background-color: #FAFAF8;
+            border: none;
+            border-bottom: 1.5px solid #E0D9CC;
+            border-radius: 0;
+            background-color: transparent;
             color: #2C2C2C;
             font-family: inherit;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease;
         }
 
         input[type="text"]:focus,
@@ -163,9 +164,14 @@
         select:focus,
         textarea:focus {
             outline: none;
-            border-color: #C99A3D;
-            background-color: #FFFFFF;
-            box-shadow: 0 0 0 3px rgba(201, 154, 61, 0.1);
+            border-bottom-color: #C99A3D;
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #B8B0A0;
         }
 
         select {
@@ -173,13 +179,23 @@
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C99A3D' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
+            background-position: right 4px center;
+            padding-right: 24px;
         }
 
         textarea {
             resize: vertical;
             min-height: 80px;
+            padding: 12px 14px;
+            border: 1px solid #E5E0D5;
+            border-radius: 6px;
+            background-color: #FCFBF9;
+        }
+
+        textarea:focus {
+            border-color: #C99A3D;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(201, 154, 61, 0.08);
         }
 
         .form-row {
@@ -217,22 +233,30 @@
             display: flex;
             align-items: center;
             padding: 12px;
-            border: 1px solid #E0D9CC;
-            border-radius: 4px;
+            border: 1px solid #ECE7DC;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background-color: #FAFAF8;
+            transition: all 0.25s ease;
+            background-color: #FCFBF9;
         }
 
         .procedure-option:hover {
             border-color: #C99A3D;
-            background-color: #FFFBF7;
+            background-color: #FFFBF2;
         }
 
-        .procedure-option input[type="radio"] {
+        .procedure-option.checked {
+            border-color: #C99A3D;
+            background-color: #FDF8ED;
+        }
+
+        .procedure-option input[type="checkbox"] {
             margin-right: 10px;
             cursor: pointer;
             accent-color: #C99A3D;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
         }
 
         .procedure-option label {
@@ -241,6 +265,25 @@
             font-size: 13px;
             text-transform: none;
             font-weight: 400;
+        }
+
+        .procedure-hint {
+            font-size: 12px;
+            color: #8A5A16;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .procedure-other-input {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .procedure-other-input.show {
+            display: block;
         }
 
         /* BUTTON */
@@ -377,100 +420,107 @@
 
             <!-- PROCEDIMENTO -->
             <div class="form-group">
-                <label>Procedimento que irá realizar *</label>
+                <label>Procedimento que irá realizar *<span class="procedure-hint">Você pode selecionar mais de um</span></label>
                 <div class="procedures-grid">
                     <div class="procedure-option">
-                        <input type="radio" id="proc1" name="procedimento" value="Preenchimento labial" required>
+                        <input type="checkbox" id="proc1" name="procedimento" value="Preenchimento labial">
                         <label for="proc1">Preenchimento labial</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc2" name="procedimento" value="Preenchimento olheira">
+                        <input type="checkbox" id="proc2" name="procedimento" value="Preenchimento olheira">
                         <label for="proc2">Preenchimento olheira</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc3" name="procedimento" value="Preenchimento bigode chinês">
+                        <input type="checkbox" id="proc3" name="procedimento" value="Preenchimento bigode chinês">
                         <label for="proc3">Preenchimento bigode chinês</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc4" name="procedimento" value="Preenchimento nariz">
+                        <input type="checkbox" id="proc4" name="procedimento" value="Preenchimento nariz">
                         <label for="proc4">Preenchimento nariz</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc5" name="procedimento" value="Preenchimento queixo">
+                        <input type="checkbox" id="proc5" name="procedimento" value="Preenchimento queixo">
                         <label for="proc5">Preenchimento queixo</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc6" name="procedimento" value="Botox Facial">
+                        <input type="checkbox" id="proc6" name="procedimento" value="Botox Facial">
                         <label for="proc6">Botox Facial</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc7" name="procedimento" value="Botox axila">
+                        <input type="checkbox" id="proc7" name="procedimento" value="Botox axila">
                         <label for="proc7">Botox axila</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc8" name="procedimento" value="Botox gengival">
+                        <input type="checkbox" id="proc8" name="procedimento" value="Botox gengival">
                         <label for="proc8">Botox gengival</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc9" name="procedimento" value="Botox Nerfetiti">
+                        <input type="checkbox" id="proc9" name="procedimento" value="Botox Nerfetiti">
                         <label for="proc9">Botox Nerfetiti</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc10" name="procedimento" value="Bioestimulador colágeno facial">
+                        <input type="checkbox" id="proc10" name="procedimento" value="Bioestimulador colágeno facial">
                         <label for="proc10">Bioestimulador colágeno facial</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc11" name="procedimento" value="Bioestimulador colágeno pescoço">
+                        <input type="checkbox" id="proc11" name="procedimento" value="Bioestimulador colágeno pescoço">
                         <label for="proc11">Bioestimulador colágeno pescoço</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc12" name="procedimento" value="Bioestimulador colágeno corporal">
+                        <input type="checkbox" id="proc12" name="procedimento" value="Bioestimulador colágeno corporal">
                         <label for="proc12">Bioestimulador colágeno corporal</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc13" name="procedimento" value="FULL FACE">
+                        <input type="checkbox" id="proc13" name="procedimento" value="FULL FACE">
                         <label for="proc13">FULL FACE</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc14" name="procedimento" value="PEELING 3D">
+                        <input type="checkbox" id="proc14" name="procedimento" value="PEELING 3D">
                         <label for="proc14">PEELING 3D</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc15" name="procedimento" value="Enzimas (qualquer região)">
+                        <input type="checkbox" id="proc15" name="procedimento" value="Enzimas (qualquer região)">
                         <label for="proc15">Enzimas (qualquer região)</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc16" name="procedimento" value="Tricologia">
+                        <input type="checkbox" id="proc16" name="procedimento" value="Tricologia">
                         <label for="proc16">Tricologia</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc17" name="procedimento" value="PDRN">
+                        <input type="checkbox" id="proc17" name="procedimento" value="PDRN">
                         <label for="proc17">PDRN</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc18" name="procedimento" value="Fios de tração silhoutte">
+                        <input type="checkbox" id="proc18" name="procedimento" value="Fios de tração silhoutte">
                         <label for="proc18">Fios de tração silhoutte</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc19" name="procedimento" value="Profhilo">
+                        <input type="checkbox" id="proc19" name="procedimento" value="Profhilo">
                         <label for="proc19">Profhilo</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc20" name="procedimento" value="Relaxar a musculatura">
+                        <input type="checkbox" id="proc20" name="procedimento" value="Relaxar a musculatura">
                         <label for="proc20">Relaxar a musculatura</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc21" name="procedimento" value="Preenchimento Glúteo">
+                        <input type="checkbox" id="proc21" name="procedimento" value="Preenchimento Glúteo">
                         <label for="proc21">Preenchimento Glúteo</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc22" name="procedimento" value="Ácido hialurônico volumizar">
+                        <input type="checkbox" id="proc22" name="procedimento" value="Ácido hialurônico volumizar">
                         <label for="proc22">Ácido hialurônico volumizar</label>
                     </div>
                     <div class="procedure-option">
-                        <input type="radio" id="proc23" name="procedimento" value="Remoção com hialuronidase">
+                        <input type="checkbox" id="proc23" name="procedimento" value="Remoção com hialuronidase">
                         <label for="proc23">Remoção com hialuronidase</label>
                     </div>
+                    <div class="procedure-option">
+                        <input type="checkbox" id="proc24" name="procedimento" value="Outros">
+                        <label for="proc24">Outros</label>
+                    </div>
+                </div>
+                <div class="procedure-other-input" id="outroProcedimentoWrapper">
+                    <input type="text" id="outroProcedimento" name="outroProcedimento" placeholder="Descreva o procedimento desejado">
                 </div>
             </div>
 
@@ -526,6 +576,22 @@
             e.target.value = value;
         });
 
+        // DESTACAR OPÇÃO SELECIONADA E CONTROLAR CAMPO "OUTROS"
+        const outroCheckbox = document.getElementById('proc24');
+        const outroWrapper = document.getElementById('outroProcedimentoWrapper');
+        const outroInput = document.getElementById('outroProcedimento');
+
+        document.querySelectorAll('input[name="procedimento"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                this.closest('.procedure-option').classList.toggle('checked', this.checked);
+
+                if (this === outroCheckbox) {
+                    outroWrapper.classList.toggle('show', this.checked);
+                    if (!this.checked) outroInput.value = '';
+                }
+            });
+        });
+
         // MOSTRAR/ESCONDER MENSAGENS
         function showMessage(elementId, text, duration = 5000) {
             const element = document.getElementById(elementId);
@@ -542,8 +608,17 @@
             const email = document.getElementById('email').value.trim();
             const cpf = document.getElementById('cpf').value.trim();
             const dataNascimento = document.getElementById('dataNascimento').value;
-            const procedimento = document.querySelector('input[name="procedimento"]:checked')?.value;
+            const procedimentosSelecionados = Array.from(document.querySelectorAll('input[name="procedimento"]:checked')).map(el => el.value);
             const comoConheceu = document.getElementById('comoConheceu').value.trim();
+
+            // SUBSTITUIR "Outros" PELA DESCRIÇÃO DIGITADA
+            const outroTexto = outroInput.value.trim();
+            const indexOutros = procedimentosSelecionados.indexOf('Outros');
+            if (indexOutros !== -1 && outroTexto) {
+                procedimentosSelecionados[indexOutros] = `Outros: ${outroTexto}`;
+            }
+
+            const procedimento = procedimentosSelecionados.join(', ');
 
             // VALIDAÇÕES
             if (!nome) {
@@ -566,8 +641,13 @@
                 return;
             }
 
-            if (!procedimento) {
-                showMessage('errorMessage', '❌ Por favor, selecione um procedimento');
+            if (procedimentosSelecionados.length === 0) {
+                showMessage('errorMessage', '❌ Por favor, selecione ao menos um procedimento');
+                return;
+            }
+
+            if (indexOutros !== -1 && !outroTexto) {
+                showMessage('errorMessage', '❌ Por favor, descreva o procedimento em "Outros"');
                 return;
             }
 
@@ -629,6 +709,8 @@
                 if (response.ok) {
                     showMessage('successMessage', '✓ Formulário enviado com sucesso! Entraremos em contato em breve.');
                     document.getElementById('procedureForm').reset();
+                    document.querySelectorAll('.procedure-option.checked').forEach(el => el.classList.remove('checked'));
+                    outroWrapper.classList.remove('show');
                 } else {
                     throw new Error('Erro ao enviar formulário');
                 }
@@ -639,6 +721,8 @@
                 if (error.message.includes('Failed to fetch') || error.message.includes('endpoint')) {
                     showMessage('successMessage', '✓ Formulário enviado com sucesso! Entraremos em contato em breve.');
                     document.getElementById('procedureForm').reset();
+                    document.querySelectorAll('.procedure-option.checked').forEach(el => el.classList.remove('checked'));
+                    outroWrapper.classList.remove('show');
                 } else {
                     showMessage('errorMessage', '❌ Erro ao enviar formulário. Tente novamente.');
                 }
