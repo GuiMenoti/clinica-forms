@@ -692,6 +692,26 @@
                 horaSubmissao: new Date().toLocaleTimeString('pt-BR')
             };
 
+            // ABRIR WHATSAPP COM MENSAGEM PRÉ-FORMATADA
+            // (a aba precisa ser aberta de forma síncrona com o clique para não ser bloqueada pelo navegador)
+            const numeroWhatsApp = '5511992733452';
+            const waWindow = window.open('about:blank', '_blank');
+
+            const mensagemWhatsApp =
+                `Olá! Gostaria de agendar um procedimento.\n\n` +
+                `*Nome:* ${nome}\n` +
+                `*Email:* ${email}\n` +
+                `*CPF:* ${cpf}\n` +
+                `*Data de Nascimento:* ${dataNascimento}\n` +
+                `*Procedimento(s):* ${procedimento}\n` +
+                `*Como conheceu a clínica:* ${comoConheceu}`;
+
+            const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagemWhatsApp)}`;
+
+            if (waWindow) {
+                waWindow.location.href = linkWhatsApp;
+            }
+
             // ENVIAR EMAIL VIA EMAILJS
             try {
                 const button = document.querySelector('button[type="submit"]');
