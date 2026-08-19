@@ -73,6 +73,13 @@
             filter: drop-shadow(0 4px 12px rgba(201, 154, 61, 0.2));
         }
 
+        .splash-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
         .logo-subtitle {
             font-size: 14px;
             font-weight: 700;
@@ -83,16 +90,24 @@
             animation: fadeIn 1.2s ease-out 0.6s both;
         }
 
+        .splash-phrase {
+            font-size: 14px;
+            font-style: italic;
+            color: #C99A3D;
+            letter-spacing: 0.5px;
+            animation: fadeIn 1.2s ease-out 0.8s both;
+        }
+
         .splash-footer {
             position: absolute;
             bottom: 40px;
             left: 0;
             width: 100%;
             text-align: center;
-            font-size: 15px;
-            font-style: italic;
-            color: #C99A3D;
-            letter-spacing: 0.5px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: #8A5A16;
+            opacity: 0.7;
             animation: fadeIn 1.2s ease-out 1s both;
         }
 
@@ -415,9 +430,12 @@
             <div class="logo-icon">
                 <img src="assets/logo.png" alt="Logo da clínica">
             </div>
-            <div class="logo-subtitle">Bem-vindo à nossa clínica</div>
+            <div class="splash-text">
+                <div class="logo-subtitle">Bem-vindo à nossa clínica</div>
+                <div class="splash-phrase">Vamos amar cuidar de você 🤍</div>
+            </div>
         </div>
-        <div class="splash-footer">Vamos amar cuidar de você 🤍</div>
+        <div class="splash-footer">Dra. Danna Daffiner</div>
     </div>
 
     <!-- FORMULÁRIO -->
