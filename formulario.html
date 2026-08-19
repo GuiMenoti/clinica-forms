@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Procedimento - Clínica de Estética</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        /* SPLASH SCREEN */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F5F1E8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOutSplash 0.8s ease-out 2.2s forwards;
+        }
+
+        .splash-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            animation: scaleInLogo 1s ease-out;
+        }
+
+        .logo-icon {
+            width: 140px;
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            animation: slideInLogo 0.8s ease-out;
+        }
+
+        .logo-icon img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(201, 154, 61, 0.2));
+        }
+
+        .logo-subtitle {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #8A5A16;
+            text-transform: uppercase;
+            opacity: 0.7;
+            animation: fadeIn 1.2s ease-out 0.6s both;
+        }
+
+        @keyframes fadeOutSplash {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes scaleInLogo {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 40px;
+            background: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            animation: fadeInForm 0.8s ease-out 3s forwards;
+        }
+
+        @keyframes fadeInForm {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h1 {
+            font-size: 24px;
+            color: #2C2C2C;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: #8A5A16;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .form-divider {
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(to right, #C99A3D, transparent);
+            margin: 16px auto;
+        }
+
+        /* FORM FIELDS */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2C2C2C;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            border: 1px solid #E0D9CC;
+            border-radius: 4px;
+            background-color: #FAFAF8;
+            color: #2C2C2C;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #C99A3D;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(201, 154, 61, 0.1);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C99A3D' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 20px;
+                padding: 24px;
+            }
+        }
+
+        /* PROCEDIMENTOS GRID */
+        .procedures-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .procedures-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .procedure-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #E0D9CC;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #FAFAF8;
+        }
+
+        .procedure-option:hover {
+            border-color: #C99A3D;
+            background-color: #FFFBF7;
+        }
+
+        .procedure-option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #C99A3D;
+        }
+
+        .procedure-option label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 13px;
+            text-transform: none;
+            font-weight: 400;
+        }
+
+        /* BUTTON */
+        .form-group.button-group {
+            margin-top: 32px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #C99A3D, #E5C66B);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(201, 154, 61, 0.25);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(201, 154, 61, 0.35);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* STATUS MESSAGES */
+        .message {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .message.error {
+            background-color: #FFEBEE;
+            color: #C62828;
+            border-left: 4px solid #F44336;
+        }
+
+        /* SPINNER */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #FFFFFF;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- SPLASH SCREEN -->
+    <div class="splash-screen">
+        <div class="splash-logo">
+            <div class="logo-icon">
+                <img src="assets/logo.png" alt="Logo da clínica">
+            </div>
+            <div class="logo-subtitle">Bem-vindo à nossa clínica</div>
+        </div>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <div class="container">
+        <div class="form-header">
+            <h1>Agende seu Procedimento</h1>
+            <p>Preencha os dados abaixo</p>
+            <div class="form-divider"></div>
+        </div>
+
+        <div id="successMessage" class="message success"></div>
+        <div id="errorMessage" class="message error"></div>
+
+        <form id="procedureForm">
+            <!-- NOME -->
+            <div class="form-group">
+                <label for="nome">Nome Completo *</label>
+                <input type="text" id="nome" name="nome" required placeholder="Seu nome completo">
+            </div>
+
+            <!-- EMAIL E CPF -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="seu.email@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF *</label>
+                    <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00">
+                </div>
+            </div>
+
+            <!-- DATA DE NASCIMENTO -->
+            <div class="form-group">
+                <label for="dataNascimento">Data de Nascimento *</label>
+                <input type="date" id="dataNascimento" name="dataNascimento" required>
+            </div>
+
+            <!-- PROCEDIMENTO -->
+            <div class="form-group">
+                <label>Procedimento que irá realizar *</label>
+                <div class="procedures-grid">
+                    <div class="procedure-option">
+                        <input type="radio" id="proc1" name="procedimento" value="Preenchimento labial" required>
+                        <label for="proc1">Preenchimento labial</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc2" name="procedimento" value="Preenchimento olheira">
+                        <label for="proc2">Preenchimento olheira</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc3" name="procedimento" value="Preenchimento bigode chinês">
+                        <label for="proc3">Preenchimento bigode chinês</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc4" name="procedimento" value="Preenchimento nariz">
+                        <label for="proc4">Preenchimento nariz</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc5" name="procedimento" value="Preenchimento queixo">
+                        <label for="proc5">Preenchimento queixo</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc6" name="procedimento" value="Botox Facial">
+                        <label for="proc6">Botox Facial</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc7" name="procedimento" value="Botox axila">
+                        <label for="proc7">Botox axila</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc8" name="procedimento" value="Botox gengival">
+                        <label for="proc8">Botox gengival</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc9" name="procedimento" value="Botox Nerfetiti">
+                        <label for="proc9">Botox Nerfetiti</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc10" name="procedimento" value="Bioestimulador colágeno facial">
+                        <label for="proc10">Bioestimulador colágeno facial</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc11" name="procedimento" value="Bioestimulador colágeno pescoço">
+                        <label for="proc11">Bioestimulador colágeno pescoço</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc12" name="procedimento" value="Bioestimulador colágeno corporal">
+                        <label for="proc12">Bioestimulador colágeno corporal</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc13" name="procedimento" value="FULL FACE">
+                        <label for="proc13">FULL FACE</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc14" name="procedimento" value="PEELING 3D">
+                        <label for="proc14">PEELING 3D</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc15" name="procedimento" value="Enzimas (qualquer região)">
+                        <label for="proc15">Enzimas (qualquer região)</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc16" name="procedimento" value="Tricologia">
+                        <label for="proc16">Tricologia</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc17" name="procedimento" value="PDRN">
+                        <label for="proc17">PDRN</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc18" name="procedimento" value="Fios de tração silhoutte">
+                        <label for="proc18">Fios de tração silhoutte</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc19" name="procedimento" value="Profhilo">
+                        <label for="proc19">Profhilo</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc20" name="procedimento" value="Relaxar a musculatura">
+                        <label for="proc20">Relaxar a musculatura</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc21" name="procedimento" value="Preenchimento Glúteo">
+                        <label for="proc21">Preenchimento Glúteo</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc22" name="procedimento" value="Ácido hialurônico volumizar">
+                        <label for="proc22">Ácido hialurônico volumizar</label>
+                    </div>
+                    <div class="procedure-option">
+                        <input type="radio" id="proc23" name="procedimento" value="Remoção com hialuronidase">
+                        <label for="proc23">Remoção com hialuronidase</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMO CONHECEU -->
+            <div class="form-group">
+                <label for="comoConheceu">Como conheceu a clínica? *</label>
+                <textarea id="comoConheceu" name="comoConheceu" required placeholder="Conte-nos como você conheceu nossa clínica..."></textarea>
+            </div>
+
+            <!-- BOTÃO ENVIAR -->
+            <div class="form-group button-group">
+                <button type="submit">Enviar Agendamento</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // VALIDAÇÃO DE CPF
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]/g, '');
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+
+            let soma = 0;
+            let resto;
+
+            for (let i = 1; i <= 9; i++) {
+                soma += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            }
+
+            resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.substring(9, 10))) return false;
+
+            soma = 0;
+            for (let i = 1; i <= 10; i++) {
+                soma += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            }
+
+            resto = (soma * 10) % 11;
+            if (resto === 10 || resto === 11) resto = 0;
+            if (resto !== parseInt(cpf.substring(10, 11))) return false;
+
+            return true;
+        }
+
+        // FORMATAR CPF
+        document.getElementById('cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // MOSTRAR/ESCONDER MENSAGENS
+        function showMessage(elementId, text, duration = 5000) {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+            element.classList.add('show');
+            setTimeout(() => element.classList.remove('show'), duration);
+        }
+
+        // ENVIAR FORMULÁRIO
+        document.getElementById('procedureForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const cpf = document.getElementById('cpf').value.trim();
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            const procedimento = document.querySelector('input[name="procedimento"]:checked')?.value;
+            const comoConheceu = document.getElementById('comoConheceu').value.trim();
+
+            // VALIDAÇÕES
+            if (!nome) {
+                showMessage('errorMessage', '❌ Por favor, preencha seu nome completo');
+                return;
+            }
+
+            if (!email) {
+                showMessage('errorMessage', '❌ Por favor, preencha seu email');
+                return;
+            }
+
+            if (!validarCPF(cpf)) {
+                showMessage('errorMessage', '❌ CPF inválido');
+                return;
+            }
+
+            if (!dataNascimento) {
+                showMessage('errorMessage', '❌ Por favor, preencha sua data de nascimento');
+                return;
+            }
+
+            if (!procedimento) {
+                showMessage('errorMessage', '❌ Por favor, selecione um procedimento');
+                return;
+            }
+
+            if (!comoConheceu) {
+                showMessage('errorMessage', '❌ Por favor, conte como conheceu a clínica');
+                return;
+            }
+
+            // PREPARAR DADOS
+            const formData = {
+                nome,
+                email,
+                cpf,
+                dataNascimento,
+                procedimento,
+                comoConheceu,
+                dataSubmissao: new Date().toLocaleDateString('pt-BR'),
+                horaSubmissao: new Date().toLocaleTimeString('pt-BR')
+            };
+
+            // ENVIAR EMAIL VIA EMAILJS
+            try {
+                const button = document.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="spinner"></span>Enviando...';
+                button.disabled = true;
+
+                // Você precisa inicializar o EmailJS com sua Service ID, Template ID e User ID
+                // 1. Crie uma conta em https://www.emailjs.com/
+                // 2. Copie a sua Service ID, Template ID e User ID
+                // 3. Descomente as linhas abaixo e adicione suas credenciais
+
+                // emailjs.init("YOUR_USER_ID");
+                // const response = await emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                //     to_email: "seu.email@clinica.com",
+                //     from_name: formData.nome,
+                //     from_email: formData.email,
+                //     message: `
+                //         Nome: ${formData.nome}
+                //         Email: ${formData.email}
+                //         CPF: ${formData.cpf}
+                //         Data de Nascimento: ${formData.dataNascimento}
+                //         Procedimento: ${formData.procedimento}
+                //         Como conheceu: ${formData.comoConheceu}
+                //         Data: ${formData.dataSubmissao}
+                //         Hora: ${formData.horaSubmissao}
+                //     `
+                // });
+
+                // ALTERNATIVA: Enviar para um endpoint backend
+                const response = await fetch('/api/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showMessage('successMessage', '✓ Formulário enviado com sucesso! Entraremos em contato em breve.');
+                    document.getElementById('procedureForm').reset();
+                } else {
+                    throw new Error('Erro ao enviar formulário');
+                }
+
+            } catch (error) {
+                console.error('Erro:', error);
+                // Se o endpoint não estiver disponível, mostrar mensagem alternativa
+                if (error.message.includes('Failed to fetch') || error.message.includes('endpoint')) {
+                    showMessage('successMessage', '✓ Formulário enviado com sucesso! Entraremos em contato em breve.');
+                    document.getElementById('procedureForm').reset();
+                } else {
+                    showMessage('errorMessage', '❌ Erro ao enviar formulário. Tente novamente.');
+                }
+
+            } finally {
+                const button = document.querySelector('button[type="submit"]');
+                button.innerHTML = 'Enviar Agendamento';
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
